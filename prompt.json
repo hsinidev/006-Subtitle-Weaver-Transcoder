@@ -1,0 +1,109 @@
+{
+  "project_id": 6,
+  "title": "OCR Screen Snipping & Text Transcriber Pro",
+  "folder_name": "006-OCR-Screen-Snipping-Text-Transcriber-Pro",
+  "category": "Vision & Text Intelligence Desktop Core",
+  "target_os": "Windows 10 / Windows 11 (x64 Native Executable / PyInstaller .exe)",
+  "version": "1.0.0-PROD",
+  "overview": "A high-performance offline desktop screen snipping, optical character recognition (OCR), and text extraction tool engineered for researchers, developers, and data analysts. Features global hotkey triggers, borderless floating capture overlays, multi-engine OCR (Tesseract v5.3+ & RapidOCR ONNX), automated table/column structure reconstruction, instant clipboard injection, and regex pattern matching.",
+  "key_features": [
+    "Global Hotkey & Floating Capture Overlay: Win32 global hotkey listener triggering a dynamic semi-transparent screen overlay with interactive click-and-drag selection box",
+    "Multi-Engine Local OCR Acceleration: Dual-engine fallback architecture utilizing static Tesseract v5.3+ binaries and RapidOCR ONNX models for sub-200ms text extraction",
+    "Layout Structure & Table Reconstruction: Bounding box spatial analysis algorithm that converts captured screen tables and multi-column text into formatted Markdown, TSV, or structured JSON",
+    "Instant Clipboard & History Inspector: Automatic copy-to-clipboard upon capture with a searchable local database history pane and regex pattern matchers (URLs, IPs, JSON, code snippets)",
+    "On-the-Fly Image Pre-Processing Pipeline: Automated image binarization, adaptive thresholding, and DPI upscaling via Pillow/OpenCV before passing rasters to OCR workers",
+    "Non-Blocking Async Worker Threads: Zero-latency capture overlay execution using isolated background worker threads and atomic queue polling at 30 Hz"
+  ],
+  "core_stack": {
+    "python_version": "3.10+",
+    "gui_framework": "CustomTkinter >= 5.2.0",
+    "drag_and_drop": "TkinterDnD2 / tkinterdnd2-universal",
+    "concurrency": "threading.Thread, queue.Queue, subprocess.Popen",
+    "packaging": "PyInstaller 6.0+ (Standalone .exe)",
+    "screen_capture": "mss >= 9.0.0 & Pillow (ImageGrab) (Ultra-low latency screen frame buffer grabber)",
+    "ocr_engines": "pytesseract >= 0.3.10 & rapidocr-onnxruntime >= 1.3.0 (Multi-engine offline text recognition)",
+    "hotkey_system": "keyboard >= 0.13.5 (Global OS key combination listener)"
+  },
+  "design_system_and_theme": {
+    "theme_name": "Cyberpunk Gold & Onyx Matrix",
+    "color_palette": {
+      "background_primary": "#090A0F",
+      "background_secondary": "#12141D",
+      "surface_card": "#1A1D2B",
+      "accent_primary": "#FFB800",
+      "accent_secondary": "#00F0FF",
+      "accent_hover": "#E0A200",
+      "text_primary": "#F8FAFC",
+      "text_secondary": "#94A3B8",
+      "danger_red": "#EF4444",
+      "warning_amber": "#F59E0B",
+      "success_emerald": "#10B981",
+      "border_color": "#282D3F"
+    },
+    "typography": {
+      "font_family": "Segoe UI, Inter, Cascadia Code, sans-serif",
+      "heading_size": 18,
+      "subheading_size": 14,
+      "body_size": 12,
+      "caption_size": 10
+    }
+  },
+  "system_architecture": {
+    "pattern": "Model-View-Controller (MVC) with Asynchronous Thread-Safe Event Queue",
+    "main_ui_thread": "CustomTkinter 60 FPS event loop managing global overlay state, capture history grid, settings panel, and polling inter-thread queues at 30 Hz (33ms interval)",
+    "worker_threads": "Background Python threads executing non-blocking stream & engine tasks",
+    "inter_thread_communication": "Thread-safe queue.Queue delivering atomic telemetry payloads: ('HOTKEY_TRIGGERED'), ('CAPTURE_DONE', image_bytes, bbox), ('OCR_RESULT', text, table_tsv), ('ERROR', err_str)",
+    "process_safety": "Thread-safe event queue passing, clean process tree termination, and memory safety",
+    "ui_thread": "CustomTkinter main loop polling queue.Queue every 40ms for 60 FPS UI responsiveness"
+  },
+  "conversion_pipeline_optimization": {
+    "binarization_pipeline": "Apply Otsu adaptive thresholding and 2x Lanczos scaling to low-DPI screen region rasters before passing to OCR models",
+    "table_reconstruction": "Group text bounding boxes into horizontal lines and vertical columns based on spatial Euclidean centroid distance matrices",
+    "binary_resolution": "5-Tier dynamic resolution for Tesseract binaries, ONNX model weights, and TESSDATA language packs"
+  },
+  "binary_resolution_order": [
+    "sys._MEIPASS (PyInstaller frozen runtime root)",
+    "Application root directory / 'bin/tesseract' subfolder",
+    "Local AppData / Program Files default paths (C:\\Program Files\\Tesseract-OCR\tesseract.exe)",
+    "System environment PATH (shutil.which)",
+    "User interactive manual binary file selection dialog"
+  ],
+  "packaging_spec": {
+    "entry_point": "main.py",
+    "output_binary_name": "SubtitleWeaverTranscoder.exe",
+    "bundle_mode": "onedir / standalone exe",
+    "icon_asset": "assets/icon.ico",
+    "datas": [
+      [
+        "assets/",
+        "assets"
+      ],
+      [
+        "bin/tesseract/",
+        "bin/tesseract"
+      ],
+      [
+        "bin/tessdata/",
+        "bin/tessdata"
+      ]
+    ],
+    "hiddenimports": [
+      "customtkinter",
+      "pytesseract",
+      "rapidocr_onnxruntime",
+      "PIL",
+      "mss",
+      "keyboard",
+      "pyperclip",
+      "queue"
+    ],
+    "hidden_imports": [
+      "customtkinter",
+      "tkinterdnd2",
+      "PIL",
+      "queue",
+      "concurrent.futures"
+    ]
+  },
+  "ai_agent_prompt": "You are an elite Senior Desktop Systems & Computer Vision Engineering Specialist tasked with implementing a production-grade native Windows desktop application titled 'OCR Screen Snipping & Text Transcriber Pro'.\n\n### PROJECT OBJECTIVE:\nConstruct a zero-cloud, sub-200ms desktop tool that captures selected screen regions via global hotkeys, performs multi-engine OCR (Tesseract & RapidOCR ONNX), reconstructs table layouts, and injects clean text directly into the system clipboard.\n\n### MANDATORY TECHNICAL REQUIREMENTS:\n1. DISTINCT UI & THEME (CYBERPUNK GOLD & ONYX MATRIX):\n   - Implement a dark workspace using #090A0F (Background), #12141D (Panels), #1A1D2B (Cards), and #FFB800 (Cyber Gold Primary Accent).\n   - Provide a responsive layout featuring an interactive history inspector, regex capture pattern matcher, engine config panel, and a borderless semi-transparent capture canvas.\n\n2. GLOBAL HOTKEY & MULTI-MONITOR SCREEN CAPTURE:\n   - Bind global OS hotkeys (e.g., Win+Shift+S or Ctrl+Alt+X) via keyboard listener.\n   - Leverage mss for ultra-low latency frame grabs across multi-monitor DPI setups.\n\n3. DUAL OCR ENGINE & SPATIAL TABLE RECONSTRUCTION:\n   - Provide dual-engine execution: Tesseract v5.3+ (static binary) and RapidOCR ONNX runtime.\n   - Implement bounding-box spatial clustering to reconstruct tables into TSV or Markdown.\n\n4. CONCURRENCY & TELEMETRY:\n   - Offload image pre-processing and OCR inference to worker threads (ThreadPoolExecutor).\n   - Stream atomic updates to the main GUI thread via queue.Queue polled at 30 Hz.\n\n5. RESILIENCE, BINARY RESOLUTION & PACKAGING:\n   - Implement a 5-tier binary resolver for tesseract.exe and ONNX model weights.\n   - Deliver a complete OCRSnippingToolPro.spec for PyInstaller packaging."
+}
