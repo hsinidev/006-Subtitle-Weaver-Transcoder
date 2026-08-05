@@ -1,6 +1,5 @@
-# Subtitle Weaver & Transcoder (ID: `006`)
+# Subtitle Weaver & Transcoder
 
-[![Project ID](https://img.shields.io/badge/Project%20ID-006-blue.svg)](https://github.com/hsinidev/006-Subtitle-Weaver-Transcoder)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Developer](https://img.shields.io/badge/Developer-Hsini%20Mohamed-green.svg)](https://hsini.dev)
 
